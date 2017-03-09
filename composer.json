@@ -1,7 +1,7 @@
 {
-    "name": "larryli/yii2-ext",
-    "description": "Yii Framework 2 extension by myself",
-    "homepage": "https://github.com/larryli/yii2-ext",
+    "name": "larryli/yii2-extras",
+    "description": "Yii Framework 2 extras by myself",
+    "homepage": "https://github.com/larryli/yii2-extras",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -16,6 +16,6 @@
         "yiisoft/yii2-bootstrap": "^2.0"
     },
     "autoload": {
-        "psr-4": { "yii\\ext\\": "src\\" }
+        "psr-4": { "larryli\\yii\\extras\\": "src\\" }
     }
 }

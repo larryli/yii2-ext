@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\ext\behaviors;
+namespace larryli\yii\extras\behaviors;
 
 use Yii;
 use yii\base\InvalidCallException;

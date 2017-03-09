@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\ext\helpers;
+namespace larryli\yii\extras\helpers;
 
 use Yii;
 use yii\bootstrap\Html as BaseHtml;

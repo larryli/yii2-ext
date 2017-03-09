@@ -1,6 +1,6 @@
 <?php
 
-namespace yii\ext\admin\assets;
+namespace larryli\yii\extras\admin\assets;
 
 use yii\base\Exception;
 use yii\bootstrap\BootstrapAsset;
@@ -10,7 +10,6 @@ use yii\web\YiiAsset;
 
 /**
  * Class AdminLTEAsset
- * @package app\assets
  */
 class AdminLTEAsset extends AssetBundle
 {

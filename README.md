@@ -1,3 +1,3 @@
-# yii2-ext
+# yii2-extras
 
-Yii Framework 2 extension by myself
+Yii Framework 2 extras by myself

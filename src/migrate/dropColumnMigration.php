@@ -3,7 +3,6 @@
  * This view is used by console/controllers/MigrateController.php
  * The following variables are available in this view:
  */
-/* @var $name string the column names */
 /* @var $className string the new migration class name */
 /* @var $table string the name table */
 /* @var $fields array the fields */
@@ -18,7 +17,7 @@ echo "<?php\n";
 use yii\db\Migration;
 
 /**
- * Handles dropping <?= $columns ?> from table `<?= $table ?>`.
+ * Handles dropping <?= $columns ?> from table `{{%<?= $table ?>}}`.
 <?= $this->render('_foreignTables', [
     'foreignKeys' => $foreignKeys,
 ]) ?>

@@ -1,8 +1,8 @@
 <?php
 
-namespace larryli\yii\extras\validators;
+namespace extras\validators;
 
-use yii\ext\helpers\Html;
+use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\validators\ValidationAsset;
 use yii\validators\Validator;

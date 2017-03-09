@@ -1,6 +1,6 @@
 <?php
 
-namespace larryli\yii\extras\admin\assets;
+namespace extras\assets;
 
 use yii\base\Exception;
 use yii\bootstrap\BootstrapAsset;
@@ -16,7 +16,7 @@ class AdminLTEAsset extends AssetBundle
     /**
      * @var string
      */
-    public $sourcePath = '@bower/admin-lte/dist';
+    public $sourcePath = '@vendor/almasaeed2010/adminlte/dist';
     /**
      * @var array
      */

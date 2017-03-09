@@ -7,7 +7,7 @@
  *     'translations' => [
  *         'yii' => [
  *             'class' => 'yii\i18n\PhpMessageSource',
- *             'basePath' => '@vendor/larryli/yii2-ext/src/messages',
+ *             'basePath' => '@vendor/larryli/yii2-extras/src/messages',
  *         ],
  *     ],
  * ],

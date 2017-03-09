@@ -5,25 +5,25 @@ namespace extras\assets;
 use yii\web\AssetBundle;
 
 /**
- * Font Awesome 图标
+ * Wechat UI asset bundle.
  */
-class FontAwesomeAsset extends AssetBundle
+class WeUIJSAsset extends AssetBundle
 {
     /**
      * @var string
      */
-    public $sourcePath = '@vendor/fortawesome/font-awesome';
+    public $sourcePath = '@npm/weui.js/dist';
     /**
      * @var array
      */
-    public $css = ['css/font-awesome.min.css'];
+    public $js = ['weui.js'];
 
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->publishOptions['only'] = ['css/*', 'fonts/*'];
+        $this->publishOptions['except'] = ['example'];
         parent::init();
     }
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace larryli\yii\extras\helpers;
+namespace extras\helpers;
 
 use Yii;
-use yii\bootstrap\Html as BaseHtml;
+use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 
 /**
  * Html 助手
  */
-class Html extends BaseHtml
+class BaseHtml extends Html
 {
     /**
      * Font Awesome icon
@@ -77,27 +77,34 @@ class Html extends BaseHtml
     /**
      * 返回分隔的页面标题
      *
-     * @param array $titles
+     * @param array $params
+     * @param string $title
      * @param string $sep
      * @return string
      */
-    public static function getPageTitle(array $titles, $sep = ' - ')
+    public static function getPageTitle(array $params, $title, $sep = ' - ')
     {
+        if (empty($params['breadcrumbs']) || !is_array($params['breadcrumbs'])) {
+            return $title . $sep . Yii::$app->name;
+        }
+        $titles = array_reverse(array_map(function ($a) {
+            if (is_array($a)) {
+                return $a['label'];
+            }
+            return $a;
+        }, $params['breadcrumbs']));
         $titles[] = Yii::$app->name;
         return implode($sep, $titles);
     }
 
     /**
-     * 时间段
-     *
      * @return array
      */
-    public static function getRelativeDurations()
+    public static function getBooleanItems()
     {
         return [
-            strtotime('today') => '今天',
-            strtotime('midnight monday this week') => '本周内',
-            strtotime('midnight first day of this month') => '本月内',
+            0 => '否',
+            1 => '是',
         ];
     }
 }

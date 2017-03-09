@@ -16,7 +16,7 @@ foreach ($foreignKeys as $column => $fkData): ?>
             '<?= $fkData['fk'] ?>',
             '{{%<?= $table ?>}}',
             '<?= $column ?>',
-            '<?= $fkData['relatedTable'] ?>',
+            '{{%<?= $fkData['relatedTable'] ?>}}',
             'id',
             'CASCADE'
         );

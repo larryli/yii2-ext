@@ -5,11 +5,12 @@ namespace extras\monipdb;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
+use yii\base\InvalidValueException;
 
 /**
  * IPv4 地址反查
  */
-class Monipdb extends Component
+class Monipdb extends Component implements \Countable, \Iterator
 {
     /**
      * @var string
@@ -64,7 +65,7 @@ class Monipdb extends Component
     }
 
     /**
-     * @throws \Exception
+     * @throws InvalidConfigException
      */
     public function load()
     {
@@ -73,12 +74,12 @@ class Monipdb extends Component
         }
         $this->_fp = @fopen($this->filename, 'rb');
         if ($this->_fp === false) {
-            throw new \Exception("Invalid {$this->filename} file!");
+            throw new InvalidConfigException("Invalid {$this->filename} file!");
         }
         $offset = unpack('Nlen', fread($this->_fp, 4));
         $this->_offset = $offset['len'] - 1024;
         if ($this->_offset < 4) {
-            throw new \Exception("Invalid {$this->filename} file!");
+            throw new InvalidConfigException("Invalid {$this->filename} file!");
         }
         $this->_end = $this->_offset - 4;
         $this->_index = fread($this->_fp, $this->_end);
@@ -88,14 +89,14 @@ class Monipdb extends Component
     /**
      * @param $ip
      * @return string
-     * @throws \Exception
+     * @throws InvalidValueException
      */
     public function find($ip)
     {
         $ip_start = intval(floor($ip / (256 * 256 * 256)));
 
         if ($ip_start < 0 || $ip_start > 255) {
-            throw new \Exception("{$ip} is not valid.");
+            throw new InvalidValueException("{$ip} is not valid.");
         }
         if (isset($this->_cached[$ip]) === true) {
             return $this->_cached[$ip];
@@ -169,5 +170,58 @@ class Monipdb extends Component
         if ($this->_fp != null) {
             fclose($this->_fp);
         }
+    }
+
+    /**
+     * Return the current element
+     *
+     * @return string
+     */
+    public function current()
+    {
+        $offset = unpack('Vlen', $this->_index{$this->position + 4} . $this->_index{$this->position + 5} . $this->_index{$this->position + 6} . "\x0");
+        $length = unpack('Clen', $this->_index{$this->position + 7});
+        return $this->read($offset['len'], $length['len']);
+    }
+
+    /**
+     * Move forward to next element
+     */
+    public function next()
+    {
+        $this->position += 8;
+    }
+
+    /**
+     * Return the key of the current element
+     *
+     * @return integer
+     */
+    public function key()
+    {
+        $ip = unpack('Nlen', $this->_index{$this->position} . $this->_index{$this->position + 1} . $this->_index{$this->position + 2} . $this->_index{$this->position + 3});
+        return intval($ip['len']);
+    }
+
+    /**
+     * Checks if current position is valid
+     *
+     * @return boolean
+     */
+    public function valid()
+    {
+        $this->load();
+        return $this->position < $this->_end;
+    }
+
+    /**
+     * Count elements of an object
+     *
+     * @return int
+     */
+    public function count()
+    {
+        $this->load();
+        return intval(($this->_end - 1024) / 8);
     }
 }

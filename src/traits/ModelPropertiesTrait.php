@@ -116,4 +116,23 @@ trait ModelPropertiesTrait
             return false;
         });
     }
+
+    /**
+     * @param string $name
+     * @param string $prefix
+     * @return integer
+     */
+    public function countRelation($name, $prefix = 'count')
+    {
+        $count = $prefix . ucfirst($name);
+        return $this->getter($count, function () use ($name)  {
+            if ($this->isRelationPopulated($name)) {
+                return count($this->$name);
+            } elseif (($relation = $this->getRelation($name, false)) !== null) {
+                /* @var $relation ActiveQueryInterface */
+                return $relation->count();
+            }
+            return 0;
+        });
+    }
 }

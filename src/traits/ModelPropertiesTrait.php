@@ -47,7 +47,7 @@ trait ModelPropertiesTrait
 
     /**
      * @param string $name
-     * @param ActiveRecord $class
+     * @param string $class
      * @param string $from
      * @param string $to
      * @param string|array|\Closure $filter
@@ -57,6 +57,7 @@ trait ModelPropertiesTrait
     public static function staticItems($name, $class, $from, $to, $filter = null, $group = null)
     {
         return self::staticGetter($name, function () use ($class, $from, $to, $filter, $group) {
+            /* @var ActiveRecord $class */
             $query = $class::find();
             if ($filter instanceof \Closure) {
                 call_user_func($filter, $query);

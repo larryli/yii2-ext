@@ -12,7 +12,7 @@ class WeUIJSAsset extends AssetBundle
     /**
      * @var string
      */
-    public $sourcePath = '@npm/weui.js/dist';
+    public $sourcePath = '@bower/weui.js/dist';
     /**
      * @var array
      */

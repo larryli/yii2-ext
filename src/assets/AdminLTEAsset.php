@@ -24,7 +24,7 @@ class AdminLTEAsset extends AssetBundle
     /**
      * @var array
      */
-    public $js = ['js/app.min.js'];
+    public $js = ['js/adminlte.min.js'];
     /**
      * @var array
      */

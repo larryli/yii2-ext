@@ -39,4 +39,38 @@ class DateTimeHelper
         }
         return [false, false];
     }
+
+    /**
+     * @param $model
+     * @param $attribute
+     * @return array
+     */
+    static public function presetDateRangePicker($model, $attribute)
+    {
+        return [
+            'model' => $model,
+            'attribute' => $attribute,
+            'convertFormat' => true,
+            'presetDropdown' => true,
+            'pluginEvents' => [
+                "cancel.daterangepicker" => "function(ev, picker) {
+picker.element[0].children[1].textContent = '';
+$(picker.element[0].nextElementSibling).val('').trigger('change');
+}",
+                'apply.daterangepicker' => 'function(ev, picker) { 
+var val = picker.startDate.format(picker.locale.format) + picker.locale.separator +
+picker.endDate.format(picker.locale.format);
+
+picker.element[0].children[1].textContent = val;
+$(picker.element[0].nextElementSibling).val(val);
+}',
+            ],
+            'pluginOptions' => [
+                'locale' => [
+                    'cancelLabel' => '清除',
+                    'format' => 'Y-m-d',
+                ],
+            ],
+        ];
+    }
 }

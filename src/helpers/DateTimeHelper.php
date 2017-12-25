@@ -47,24 +47,31 @@ class DateTimeHelper
      */
     static public function presetDateRangePicker($model, $attribute)
     {
+        $template = <<< HTML
+        <div class="form-control kv-drp-dropdown">
+            <span class="range-value">{value}</span>
+            <span class="pull-right"><b class="caret"></b></span>
+        </div>
+        {input}
+HTML;
         return [
             'model' => $model,
             'attribute' => $attribute,
+            'containerTemplate' => $template,
             'convertFormat' => true,
+            'defaultPresetValueOptions' => ['class' => 'hidden'],
             'presetDropdown' => true,
             'pluginEvents' => [
-                "cancel.daterangepicker" => "function(ev, picker) {
-picker.element[0].children[1].textContent = '';
-$(picker.element[0].nextElementSibling).val('').trigger('change');
-}",
-                'apply.daterangepicker' => 'function(ev, picker) { 
-var val = picker.startDate.format(picker.locale.format) + picker.locale.separator +
-picker.endDate.format(picker.locale.format);
-
-picker.element[0].children[1].textContent = val;
+                'apply.daterangepicker' => 'function(ev, picker) {
+var val = picker.startDate.format(picker.locale.format) + picker.locale.separator + picker.endDate.format(picker.locale.format);
+picker.element[0].children[0].textContent = val;
 $(picker.element[0].nextElementSibling).val(val);
 }',
-            ],
+                "cancel.daterangepicker" => "function(ev, picker) {
+picker.element[0].children[0].textContent = '';
+$(picker.element[0].nextElementSibling).val('').trigger('change');
+}",
+                ],
             'pluginOptions' => [
                 'locale' => [
                     'cancelLabel' => '清除',

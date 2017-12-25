@@ -41,11 +41,11 @@ class DateTimeHelper
     }
 
     /**
-     * @param $model
-     * @param $attribute
+     * @param \yii\base\Model $model
+     * @param string $attribute
      * @return array
      */
-    static public function presetDateRangePicker($model, $attribute)
+    public static function presetDateRangePicker($model, $attribute)
     {
         $template = <<< HTML
         <div class="form-control kv-drp-dropdown">

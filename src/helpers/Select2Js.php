@@ -2,6 +2,7 @@
 
 namespace extras\helpers;
 
+use kartik\select2\Select2;
 use yii\web\JsExpression;
 
 /**
@@ -9,6 +10,37 @@ use yii\web\JsExpression;
  */
 class Select2Js
 {
+    /**
+     * @param \yii\base\Model $model
+     * @param string $attribute
+     * @param string $url
+     * @param string $text
+     * @return array
+     */
+    public static function ajaxSelect2($model, $attribute, $url, $text)
+    {
+        return [
+            'model' => $model,
+            'attribute' => $attribute,
+            'initValueText' => $text,
+            'theme' => Select2::THEME_DEFAULT,
+            'pluginOptions' => [
+                'placeholder' => '',
+                'allowClear' => true,
+                'ajax' => [
+                    'url' => $url,
+                    'dataType' => 'json',
+                    'delay' => 250,
+                    'data' => static::data(),
+                    'processResults' => static::processResults(),
+                    'cache' => true,
+                ],
+                'templateResult' => static::templateResult(),
+                'templateSelection' => static::templateSelection(),
+            ],
+        ];
+    }
+
     /**
      * @param string $term
      * @param string $page

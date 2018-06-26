@@ -20,5 +20,11 @@
     },
     "autoload": {
         "psr-4": { "extras\\": "src\\" }
+    },
+    "repositories": {
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
     }
 }

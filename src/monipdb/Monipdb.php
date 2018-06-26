@@ -17,9 +17,25 @@ class Monipdb extends Component implements \Countable, \Iterator
      */
     public $filename;
     /**
+     * @var bool
+     */
+    public $datx = false;
+    /**
      * @var
      */
     protected $position;
+    /**
+     * @var int
+     */
+    protected $step = 8;
+    /**
+     * @var int
+     */
+    protected $reserve = 1024;
+    /**
+     * @var
+     */
+    protected $lengthFunc;
     /**
      * @var null
      */
@@ -47,6 +63,7 @@ class Monipdb extends Component implements \Countable, \Iterator
 
     /**
      * @inheritdoc
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -54,6 +71,17 @@ class Monipdb extends Component implements \Countable, \Iterator
             throw new InvalidConfigException('Monipdb::filename must be set.');
         }
         $this->filename = Yii::getAlias($this->filename);
+        if ($this->datx) {
+            $this->step = 9;
+            $this->reserve = 262144;
+            $this->lengthFunc = function($start) {
+                return unpack('nlen', $this->_index{$start + 7} . $this->_index{$start + 8});
+            };
+        } else {
+            $this->lengthFunc = function($start) {
+                return unpack('Clen', $this->_index{$start + 7});
+            };
+        }
     }
 
     /**
@@ -77,7 +105,7 @@ class Monipdb extends Component implements \Countable, \Iterator
             throw new InvalidConfigException("Invalid {$this->filename} file!");
         }
         $offset = unpack('Nlen', fread($this->_fp, 4));
-        $this->_offset = $offset['len'] - 1024;
+        $this->_offset = $offset['len'] - $this->reserve;
         if ($this->_offset < 4) {
             throw new InvalidConfigException("Invalid {$this->filename} file!");
         }
@@ -89,11 +117,12 @@ class Monipdb extends Component implements \Countable, \Iterator
     /**
      * @param $ip
      * @return string
-     * @throws InvalidValueException
+     * @throws InvalidConfigException
      */
     public function find($ip)
     {
-        $ip_start = intval(floor($ip / (256 * 256 * 256)));
+        $ip_start2 = intval(floor($ip / (256 * 256)));
+        $ip_start = intval(floor($ip_start2 / 256));
 
         if ($ip_start < 0 || $ip_start > 255) {
             throw new InvalidValueException("{$ip} is not valid.");
@@ -104,21 +133,16 @@ class Monipdb extends Component implements \Countable, \Iterator
 
         $this->load();
         $nip = pack('N', $ip);
-        $tmp_offset = $ip_start * 4;
+        $tmp_offset = ($this->datx ? $ip_start2 : $ip_start) * 4;
         $start = unpack('Vlen', $this->_index{$tmp_offset} . $this->_index{$tmp_offset + 1} . $this->_index{$tmp_offset + 2} . $this->_index{$tmp_offset + 3});
-        $start = $start['len'] * 8 + 1024;
-        if ($ip_start == 255) {
-            $end = $this->_end - 8;
-        } else {
-            $end = unpack('Vlen', $this->_index{$tmp_offset + 4} . $this->_index{$tmp_offset + 5} . $this->_index{$tmp_offset + 6} . $this->_index{$tmp_offset + 7});
-            $end = $end['len'] * 8 + 1024 - 8;
-        }
+        $start = $start['len'] * $this->step + $this->reserve;
+        $end = $this->_end - $this->step;
         $start = $this->idx($nip, $start, $end);
         if ($start === null) {
             $this->_cached[$ip] = '';
         } else {
             $offset = unpack('Vlen', $this->_index{$start + 4} . $this->_index{$start + 5} . $this->_index{$start + 6} . "\x0");
-            $length = unpack('Clen', $this->_index{$start + 7});
+            $length = call_user_func($this->lengthFunc, $start);
             $this->_cached[$ip] = $this->read($offset['len'], $length['len']);
         }
         return $this->_cached[$ip];
@@ -132,7 +156,7 @@ class Monipdb extends Component implements \Countable, \Iterator
      */
     private function idx($ip, $l, $r)
     {
-        for ($m = $l; $m <= $r; $m += 8) {
+        for ($m = $l; $m <= $r; $m += $this->step) {
             if ($this->_index{$m} . $this->_index{$m + 1} . $this->_index{$m + 2} . $this->_index{$m + 3} >= $ip) {
                 return $m;
             }
@@ -159,7 +183,7 @@ class Monipdb extends Component implements \Countable, \Iterator
      */
     public function rewind()
     {
-        $this->position = 1024;
+        $this->position = $this->reserve;
     }
 
     /**
@@ -180,7 +204,7 @@ class Monipdb extends Component implements \Countable, \Iterator
     public function current()
     {
         $offset = unpack('Vlen', $this->_index{$this->position + 4} . $this->_index{$this->position + 5} . $this->_index{$this->position + 6} . "\x0");
-        $length = unpack('Clen', $this->_index{$this->position + 7});
+        $length = call_user_func($this->lengthFunc, $this->position);
         return $this->read($offset['len'], $length['len']);
     }
 
@@ -189,7 +213,7 @@ class Monipdb extends Component implements \Countable, \Iterator
      */
     public function next()
     {
-        $this->position += 8;
+        $this->position += $this->step;
     }
 
     /**
@@ -207,6 +231,7 @@ class Monipdb extends Component implements \Countable, \Iterator
      * Checks if current position is valid
      *
      * @return boolean
+     * @throws InvalidConfigException
      */
     public function valid()
     {
@@ -218,10 +243,11 @@ class Monipdb extends Component implements \Countable, \Iterator
      * Count elements of an object
      *
      * @return int
+     * @throws InvalidConfigException
      */
     public function count()
     {
         $this->load();
-        return intval(($this->_end - 1024) / 8);
+        return intval(($this->_end - $this->reserve) / $this->step);
     }
 }

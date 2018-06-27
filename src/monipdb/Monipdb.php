@@ -6,6 +6,7 @@ use larryli\monipdb\MonipdbTrait;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
+use yii\base\InvalidValueException;
 
 /**
  * Monipdb Component
@@ -36,6 +37,7 @@ class Monipdb extends Component implements \ArrayAccess, \Countable, \Iterator
     /**
      * @inheritdoc
      * @throws InvalidConfigException
+     * @throws InvalidValueException
      */
     public function init()
     {
@@ -48,19 +50,17 @@ class Monipdb extends Component implements \ArrayAccess, \Countable, \Iterator
             $this->data = fread($file, fstat($file)['size'] - 4);
             fclose($file);
         } catch (\Exception $e) {
-            throw new InvalidConfigException("Invalid {$this->filename} file!");
+            throw new InvalidValueException("Invalid {$this->filename} file!");
         }
     }
 
     /**
-     * @inheritdoc
+     * @return bool
+     * @deprecated
      */
-    public function offsetGet($offset)
+    public function exists()
     {
-        if (!isset($this->cached[$offset])) {
-            $this->cached[$offset] = static::traitOffsetGet($offset);
-        }
-        return $this->cached[$offset];
+        return file_exists($this->filename);
     }
 
     /**
@@ -71,6 +71,18 @@ class Monipdb extends Component implements \ArrayAccess, \Countable, \Iterator
     public function find($ip)
     {
         return $this->offsetGet($ip);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function offsetGet($offset)
+    {
+        if (!isset($this->cached[$offset])) {
+            $this->cached[$offset] = static::traitOffsetGet($offset);
+        }
+        return $this->cached[$offset];
     }
 
     /**

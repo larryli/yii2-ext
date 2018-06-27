@@ -11,6 +11,9 @@
         }
     ],
     "minimum-stability": "stable",
+    "require": {
+        "larryli/monipdb": "~2.1"
+    },
     "require-dev": {
         "pda/pheanstalk": "*",
         "yiisoft/yii2": "~2.0",

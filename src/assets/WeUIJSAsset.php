@@ -17,6 +17,12 @@ class WeUIJSAsset extends AssetBundle
      * @var array
      */
     public $js = ['weui.js'];
+    /**
+     * @var array
+     */
+    public $depends = [
+        WeUIAsset::class,
+    ];
 
     /**
      * @inheritdoc

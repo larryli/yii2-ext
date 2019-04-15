@@ -17,7 +17,7 @@ echo "<?php\n";
 use yii\db\Migration;
 
 /**
- * Handles adding <?= $columns ?> to table `{{%<?= $table ?>}}`.
+ * Handles adding <?= $columns ?> to table `<?= $table ?>`.
 <?= $this->render('_foreignTables', [
      'foreignKeys' => $foreignKeys,
  ]) ?>

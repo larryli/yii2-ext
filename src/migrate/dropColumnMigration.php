@@ -17,7 +17,7 @@ echo "<?php\n";
 use yii\db\Migration;
 
 /**
- * Handles dropping <?= $columns ?> from table `{{%<?= $table ?>}}`.
+ * Handles dropping <?= $columns ?> from table `<?= $table ?>`.
 <?= $this->render('_foreignTables', [
     'foreignKeys' => $foreignKeys,
 ]) ?>

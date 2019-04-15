@@ -4,9 +4,9 @@
 /* @var $foreignKeys array the foreign keys */
 
 foreach ($fields as $field): ?>
-        $this->addColumn('{{%<?=
+        $this->addColumn('<?=
             $table
-        ?>}}', '<?=
+        ?>', '<?=
             $field['property']
         ?>', $this-><?=
             $field['decorators']

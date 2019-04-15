@@ -9,5 +9,5 @@ echo  $this->render('_dropForeignKeys', [
 ]);
 
 foreach ($fields as $field): ?>
-        $this->dropColumn('{{%<?= $table ?>}}', '<?= $field['property'] ?>');
+        $this->dropColumn('<?= $table ?>', '<?= $field['property'] ?>');
 <?php endforeach;

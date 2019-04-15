@@ -14,7 +14,7 @@
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%<?= $table ?>}}', [
+        $this->createTable('<?= $table ?>', [
 <?php foreach ($fields as $field):
     if (empty($field['decorators'])): ?>
             '<?= $field['property'] ?>',

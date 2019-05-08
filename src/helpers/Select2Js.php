@@ -1,6 +1,6 @@
 <?php
 
-namespace LarryLi\Yii\Extras\Helpers;
+namespace larryli\yii\extras\helpers;
 
 use kartik\select2\Select2;
 use yii\base\Model;

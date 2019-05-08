@@ -1,6 +1,6 @@
 <?php
 
-namespace LarryLi\Yii\Extras\MonIpDb;
+namespace larryli\yii\extras\monipdb;
 
 use ArrayAccess;
 use Countable;
@@ -17,7 +17,7 @@ use yii\base\InvalidValueException;
  *
  * `Yii::$app->ipDb['202.103.24.68']`
  */
-class MonIpDb extends Component implements ArrayAccess, Countable, Iterator
+class Monipdb extends Component implements ArrayAccess, Countable, Iterator
 {
     use MonipdbTrait {
         offsetGet as protected traitOffsetGet;

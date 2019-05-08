@@ -1,6 +1,6 @@
 <?php
 
-namespace LarryLi\Yii\Extras\Ajax;
+namespace larryli\yii\extras\ajax;
 
 use Yii;
 use yii\base\Arrayable;

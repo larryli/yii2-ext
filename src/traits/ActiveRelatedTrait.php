@@ -1,6 +1,6 @@
 <?php
 
-namespace LarryLi\Yii\Extras\Traits;
+namespace larryli\yii\extras\traits;
 
 use Throwable;
 use yii\base\InvalidConfigException;

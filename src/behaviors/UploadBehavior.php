@@ -1,6 +1,6 @@
 <?php
 
-namespace LarryLi\Yii\Extras\Behaviors;
+namespace larryli\yii\extras\behaviors;
 
 use yii\base\Exception;
 use yii\db\ActiveRecord;

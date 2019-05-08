@@ -1,6 +1,6 @@
 <?php
 
-namespace LarryLi\Yii\Extras\Traits;
+namespace larryli\yii\extras\traits;
 
 use Closure;
 use yii\db\ActiveQueryInterface;

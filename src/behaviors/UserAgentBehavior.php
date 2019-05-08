@@ -1,6 +1,6 @@
 <?php
 
-namespace LarryLi\Yii\Extras\Behaviors;
+namespace larryli\yii\extras\behaviors;
 
 use Yii;
 use yii\base\InvalidCallException;
@@ -9,24 +9,24 @@ use yii\behaviors\AttributeBehavior;
 use yii\db\BaseActiveRecord;
 
 /**
- * 自动记录 IP
+ * 自动记录 User-Agent
  */
-class IpBehavior extends AttributeBehavior
+class UserAgentBehavior extends AttributeBehavior
 {
     /**
-     * @var string the attribute that will receive IP value on create.
+     * @var string the attribute that will receive User-Agent value on create.
      * Set to false if you do not want record it
      */
-    public $createdFromAttribute = 'created_from';
+    public $createdViaAttribute = 'created_via';
     /**
-     * @var string the attribute that will receive IP value on update.
+     * @var string the attribute that will receive User-Agent value on update.
      * Set to false if you do not want record it
      */
-    public $updatedFromAttribute = 'updated_from';
+    public $updatedViaAttribute = 'updated_via';
     /**
      * @var callable|string
-     * This can be either an anonymous function that returns the IP value or a string.
-     * If not set, it will use the value of `\Yii::$app->request->userIp` to set the attributes.
+     * This can be either an anonymous function that returns the User-Agent value or a string.
+     * If not set, it will use the value of `\Yii::$app->request->userAgent` to set the attributes.
      * NOTE! Null is returned if the user IP address cannot be detected.
      */
     public $value;
@@ -39,8 +39,8 @@ class IpBehavior extends AttributeBehavior
         parent::init();
         if (empty($this->attributes)) {
             $this->attributes = [
-                BaseActiveRecord::EVENT_BEFORE_INSERT => [$this->createdFromAttribute, $this->updatedFromAttribute],
-                BaseActiveRecord::EVENT_BEFORE_UPDATE => $this->updatedFromAttribute,
+                BaseActiveRecord::EVENT_BEFORE_INSERT => [$this->createdViaAttribute, $this->updatedViaAttribute],
+                BaseActiveRecord::EVENT_BEFORE_UPDATE => $this->updatedViaAttribute,
             ];
         }
     }
@@ -54,23 +54,23 @@ class IpBehavior extends AttributeBehavior
             return $this->value;
         }
         return $this->value !== null ? call_user_func($this->value, $event) :
-            is_a(Yii::$app->request, Request::class) ? Yii::$app->request->userIP : '127.0.0.1';
+            is_a(Yii::$app->request, Request::class) ? Yii::$app->request->userAgent : 'Console';
     }
 
     /**
-     * Sets an IP address to the attribute.
+     * Sets an User-Agent to the attribute.
      *
      * ```php
-     * $model->setIp('updated_from');
+     * $model->setUserAgent('updated_via');
      * ```
      * @param string $attribute the name of the attribute to update.
      */
-    public function setIp($attribute)
+    public function setUserAgent($attribute)
     {
         /* @var $owner BaseActiveRecord */
         $owner = $this->owner;
         if ($owner->getIsNewRecord()) {
-            throw new InvalidCallException('Updating the ip is not possible on a new record.');
+            throw new InvalidCallException('Updating the user-agent is not possible on a new record.');
         }
         $owner->updateAttributes(array_fill_keys((array)$attribute, $this->getValue(null)));
     }

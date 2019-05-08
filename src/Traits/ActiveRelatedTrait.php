@@ -1,9 +1,12 @@
 <?php
 
-namespace extras\traits;
+namespace LarryLi\Yii\Extras\Traits;
 
+use Throwable;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -48,6 +51,7 @@ trait ActiveRelatedTrait
      * @param string $key
      * @param callback $callback 回调处理子模型载入 POST 表单数据，取代 Model::load()
      * @return bool
+     * @throws InvalidConfigException
      */
     public function loadRelated($attribute, $data, $formName = null, $canModify = true, $key = 'id', $callback = null)
     {
@@ -207,15 +211,16 @@ trait ActiveRelatedTrait
      */
     public function linkRelated($attribute, $relation)
     {
-        /* @var ActiveRecord $this */
         $related = $this->$attribute;
         if (is_array($related)) {
             /* @var ActiveRecord[] $related */
             foreach ($related as $model) {
+                /** @var ActiveRecord $this */
                 $model->link($relation, $this);
             }
         } else {
             /* @var ActiveRecord $related */
+            /** @var ActiveRecord $this */
             $related->link($relation, $this);
         }
     }
@@ -225,6 +230,8 @@ trait ActiveRelatedTrait
      * @param string $relation
      * @param string $className
      * @param string $key
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function saveRelated($attribute, $relation, $className = null, $key = 'id')
     {
@@ -243,6 +250,7 @@ trait ActiveRelatedTrait
             foreach ($related as $model) {
                 /* @var ActiveRecord[] $related */
                 if ($model->isNewRecord) {
+                    /** @var ActiveRecord $this */
                     $model->link($relation, $this);
                 } else {
                     $model->save(false);
@@ -251,6 +259,7 @@ trait ActiveRelatedTrait
         } else {
             /* @var ActiveRecord $related */
             if ($related->isNewRecord) {
+                /** @var ActiveRecord $this */
                 $related->link($relation, $this);
             } else {
                 $related->save(false);
@@ -262,6 +271,8 @@ trait ActiveRelatedTrait
      * @param string $attribute
      * @param string $className
      * @param string $key
+     * @throws StaleObjectException
+     * @throws Throwable
      */
     public function deleteRelated($attribute, $className = null, $key = 'id')
     {

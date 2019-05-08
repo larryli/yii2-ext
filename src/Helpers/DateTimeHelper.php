@@ -1,6 +1,8 @@
 <?php
 
-namespace extras\helpers;
+namespace LarryLi\Yii\Extras\Helpers;
+
+use yii\base\Model;
 
 /**
  * Class DateTimeHelper
@@ -41,7 +43,7 @@ class DateTimeHelper
     }
 
     /**
-     * @param \yii\base\Model $model
+     * @param Model $model
      * @param string $attribute
      * @return array
      */

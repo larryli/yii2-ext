@@ -1,7 +1,8 @@
 <?php
 
-namespace extras\traits;
+namespace LarryLi\Yii\Extras\Traits;
 
+use Closure;
 use yii\db\ActiveQueryInterface;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -33,7 +34,7 @@ trait ModelPropertiesTrait
         if (isset(self::$_staticProperties[$name]) || array_key_exists($name, self::$_staticProperties)) {
             return self::$_staticProperties[$name];
         }
-        return self::$_staticProperties[$name] = ($callback instanceof \Closure) ? $callback() : (method_exists(static::class, $name) ? static::$name() : null);
+        return self::$_staticProperties[$name] = ($callback instanceof Closure) ? $callback() : (method_exists(static::class, $name) ? static::$name() : null);
     }
 
     /**
@@ -50,7 +51,7 @@ trait ModelPropertiesTrait
      * @param string $class
      * @param string $from
      * @param string $to
-     * @param string|array|\Closure $filter
+     * @param string|array|Closure $filter
      * @param string $group
      * @return array
      */
@@ -59,7 +60,7 @@ trait ModelPropertiesTrait
         return self::staticGetter($name, function () use ($class, $from, $to, $filter, $group) {
             /* @var ActiveRecord $class */
             $query = $class::find();
-            if ($filter instanceof \Closure) {
+            if ($filter instanceof Closure) {
                 call_user_func($filter, $query);
             } elseif ($filter !== null) {
                 $query->andWhere($filter);
@@ -82,12 +83,12 @@ trait ModelPropertiesTrait
         if (isset($this->_properties[$name]) || array_key_exists($name, $this->_properties)) {
             return $this->_properties[$name];
         }
-        if ($callback instanceof \Closure) {
+        if ($callback instanceof Closure) {
             return $this->_properties[$name] = call_user_func($callback);
         } elseif (method_exists($this, $name)) {
             return $this->_properties[$name] = call_user_func([$this, $name]);
         }
-        return $this->_properties[$name] = ($callback instanceof \Closure) ? $callback() : (method_exists($this, $name) ? $this->$name() : null);
+        return $this->_properties[$name] = ($callback instanceof Closure) ? $callback() : (method_exists($this, $name) ? $this->$name() : null);
     }
 
     /**

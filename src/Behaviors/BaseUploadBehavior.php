@@ -1,6 +1,6 @@
 <?php
 
-namespace extras\behaviors;
+namespace LarryLi\Yii\Extras\Behaviors;
 
 use Yii;
 use yii\base\Behavior;
@@ -147,6 +147,7 @@ class BaseUploadBehavior extends Behavior
     /**
      * @param string $extension
      * @return string
+     * @throws Exception
      */
     protected function generatePath($extension = 'jpg')
     {

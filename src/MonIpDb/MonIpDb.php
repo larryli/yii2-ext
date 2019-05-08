@@ -1,7 +1,11 @@
 <?php
 
-namespace extras\monipdb;
+namespace LarryLi\Yii\Extras\MonIpDb;
 
+use ArrayAccess;
+use Countable;
+use Exception;
+use Iterator;
 use larryli\monipdb\MonipdbTrait;
 use Yii;
 use yii\base\Component;
@@ -9,13 +13,15 @@ use yii\base\InvalidConfigException;
 use yii\base\InvalidValueException;
 
 /**
- * Monipdb Component
+ * MonIpDb Component
  *
- * `Yii::$app->monipdb['202.103.24.68']`
+ * `Yii::$app->ipDb['202.103.24.68']`
  */
-class Monipdb extends Component implements \ArrayAccess, \Countable, \Iterator
+class MonIpDb extends Component implements ArrayAccess, Countable, Iterator
 {
-    use MonipdbTrait {offsetGet as protected traitOffsetGet;}
+    use MonipdbTrait {
+        offsetGet as protected traitOffsetGet;
+    }
 
     /**
      * @var string
@@ -49,7 +55,7 @@ class Monipdb extends Component implements \ArrayAccess, \Countable, \Iterator
             $file = $this->load($this->filename, $this->datx);
             $this->data = fread($file, fstat($file)['size'] - 4);
             fclose($file);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new InvalidValueException("Invalid {$this->filename} file!");
         }
     }
@@ -72,7 +78,6 @@ class Monipdb extends Component implements \ArrayAccess, \Countable, \Iterator
     {
         return $this->offsetGet($ip);
     }
-
 
     /**
      * @inheritdoc

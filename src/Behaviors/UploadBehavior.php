@@ -1,7 +1,8 @@
 <?php
 
-namespace extras\behaviors;
+namespace LarryLi\Yii\Extras\Behaviors;
 
+use yii\base\Exception;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
@@ -56,6 +57,7 @@ class UploadBehavior extends BaseUploadBehavior
 
     /**
      * 处理文件替换，保存旧文件到 oldAttributes
+     * @throws Exception
      */
     public function beforeSave()
     {
@@ -78,7 +80,7 @@ class UploadBehavior extends BaseUploadBehavior
     /**
      * 保存上传的文件，同时删除旧有的文件。
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function afterSave()
     {

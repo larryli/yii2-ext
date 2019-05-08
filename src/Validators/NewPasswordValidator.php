@@ -1,6 +1,6 @@
 <?php
 
-namespace extras\validators;
+namespace LarryLi\Yii\Extras\Validators;
 
 use yii\helpers\Html;
 use yii\helpers\Json;

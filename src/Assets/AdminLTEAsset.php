@@ -1,6 +1,6 @@
 <?php
 
-namespace extras\assets;
+namespace LarryLi\Yii\Extras\Assets;
 
 use yii\base\Exception;
 use yii\bootstrap\BootstrapAsset;

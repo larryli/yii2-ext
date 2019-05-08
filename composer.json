@@ -1,33 +1,37 @@
 {
-    "name": "larryli/yii2-extras",
-    "description": "Yii Framework 2 extras by myself.",
-    "homepage": "https://github.com/larryli/yii2-extras",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Larry Li",
-            "email": "larryli@qq.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "larryli/monipdb": "~2.1"
-    },
-    "require-dev": {
-        "pda/pheanstalk": "*",
-        "yiisoft/yii2": "~2.0",
-        "yiisoft/yii2-bootstrap": "^2.0",
-        "yiisoft/yii2-debug": "~2.0",
-        "yiisoft/yii2-gii": "^2.0"
-    },
-    "autoload": {
-        "psr-4": { "extras\\": "src\\" }
-    },
-    "repositories": {
-        "asset-packagist": {
-            "type": "composer",
-            "url": "https://asset-packagist.org"
-        }
+  "name": "larryli/yii2-extras",
+  "description": "Yii Framework 2 extras by myself.",
+  "homepage": "https://github.com/larryli/yii2-extras",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Larry Li",
+      "email": "larryli@qq.com"
     }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=7.0.15",
+    "ext-gd": "*",
+    "larryli/monipdb": "~2.1"
+  },
+  "require-dev": {
+    "kartik-v/yii2-widget-select2": "~2.0",
+    "yiisoft/yii2": "~2.0",
+    "yiisoft/yii2-bootstrap": "^2.0",
+    "yiisoft/yii2-debug": "~2.0",
+    "yiisoft/yii2-gii": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "LarryLi\\Yii\\Extras\\": "src/"
+    }
+  },
+  "repositories": {
+    "asset-packagist": {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  }
 }

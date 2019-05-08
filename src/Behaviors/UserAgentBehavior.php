@@ -1,9 +1,10 @@
 <?php
 
-namespace extras\behaviors;
+namespace LarryLi\Yii\Extras\Behaviors;
 
 use Yii;
 use yii\base\InvalidCallException;
+use yii\base\Request;
 use yii\behaviors\AttributeBehavior;
 use yii\db\BaseActiveRecord;
 
@@ -51,9 +52,9 @@ class UserAgentBehavior extends AttributeBehavior
     {
         if (is_string($this->value)) {
             return $this->value;
-        } else {
-            return $this->value !== null ? call_user_func($this->value, $event) : Yii::$app->request->userAgent;
         }
+        return $this->value !== null ? call_user_func($this->value, $event) :
+            is_a(Yii::$app->request, Request::class) ? Yii::$app->request->userAgent : 'Console';
     }
 
     /**

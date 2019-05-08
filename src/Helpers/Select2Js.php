@@ -1,8 +1,9 @@
 <?php
 
-namespace extras\helpers;
+namespace LarryLi\Yii\Extras\Helpers;
 
 use kartik\select2\Select2;
+use yii\base\Model;
 use yii\web\JsExpression;
 
 /**
@@ -11,7 +12,7 @@ use yii\web\JsExpression;
 class Select2Js
 {
     /**
-     * @param \yii\base\Model $model
+     * @param Model $model
      * @param string $attribute
      * @param string $url
      * @param string $text

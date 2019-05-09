@@ -4,9 +4,9 @@ namespace larryli\yii\extras\behaviors;
 
 use Yii;
 use yii\base\InvalidCallException;
-use yii\base\Request;
 use yii\behaviors\AttributeBehavior;
 use yii\db\BaseActiveRecord;
+use yii\web\Request;
 
 /**
  * 自动记录 User-Agent

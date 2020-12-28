@@ -54,7 +54,7 @@ class IpBehavior extends AttributeBehavior
             return $this->value;
         }
         return $this->value !== null ? call_user_func($this->value, $event) :
-            is_a(Yii::$app->request, Request::class) ? Yii::$app->request->userIP : '127.0.0.1';
+            (is_a(Yii::$app->request, Request::class) ? Yii::$app->request->userIP : '127.0.0.1');
     }
 
     /**

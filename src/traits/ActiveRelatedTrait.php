@@ -237,7 +237,7 @@ trait ActiveRelatedTrait
     {
         $deletes = $this->getDeleteRelated($attribute);
         /* @var ActiveRecord $model */
-        if (method_exists($className, 'deleteAll')) {
+        if (class_exists($className) && method_exists($className, 'deleteAll')) {
             call_user_func([$className, 'deleteAll'], ['in', $key, $deletes]);
         } else {
             foreach ($deletes as $model) {
@@ -276,7 +276,7 @@ trait ActiveRelatedTrait
      */
     public function deleteRelated($attribute, $className = null, $key = 'id')
     {
-        if (method_exists($className, 'deleteAll')) {
+        if (class_exists($className) && method_exists($className, 'deleteAll')) {
             $deletes = ArrayHelper::getColumn($this->$attribute, $key, []);
             call_user_func([$className, 'deleteAll'], ['in', $key, $deletes]);
         } else {
